@@ -1,0 +1,35 @@
+{
+  "name": "agenteye-copilot-extension",
+  "version": "1.0.0",
+  "description": "AgentEye — AI Code Review Copilot Extension. Reviews your code as you work, catching bugs, security issues, and code smells before they reach PR.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types src/index.ts",
+    "start": "node --experimental-strip-types src/index.ts"
+  },
+  "dependencies": {
+    "@copilot-extensions/preview-sdk": "^5.0.1",
+    "@hono/node-server": "^1.13.8",
+    "hono": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.8"
+  },
+  "engines": {
+    "node": ">=22.13.1"
+  },
+  "keywords": [
+    "copilot-extension",
+    "code-review",
+    "ai-code-review",
+    "github-copilot",
+    "developer-tools"
+  ],
+  "author": "AgentEye / Project Auto-Equity",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zanabalofficial/agenteye-copilot-extension"
+  }
+}
