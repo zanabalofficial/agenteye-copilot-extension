@@ -29,6 +29,33 @@ console.log(`   Model: ${config.ai.model}`);
 console.log(`   Provider: ${config.ai.provider}`);
 console.log(`   Review focus: ${config.review.reviewTypes.join(", ")}`);
 
+// Test endpoint — bypasses GitHub signature verification for local testing
+app.post("/test-review", async (c) => {
+  try {
+    const body = await c.req.json();
+    const code = body.code ?? "";
+    const language = body.language ?? "text";
+    const fileName = body.fileName ?? "code";
+    const userMessage = body.message ?? "Review this code for issues";
+
+    console.log(`🧪 Test review: ${fileName} (${language}, ${code.length} chars)`);
+
+    c.header("Content-Type", "text/html");
+    c.header("X-Content-Type-Options", "nosniff");
+
+    return stream(c, async (s) => {
+      s.write(createAckEvent());
+      const result = await reviewCode({ language, code, userMessage, fileName });
+      s.write(createTextEvent(result.rawText));
+      s.write(createTextEvent(`\n---\n**${result.summary}**`));
+      s.write(createDoneEvent());
+    });
+  } catch (error) {
+    console.error("❌ Test review error:", error);
+    return c.json({ error: String(error) }, 500);
+  }
+});
+
 // Health check
 app.get("/", (c) => {
   return c.json({
